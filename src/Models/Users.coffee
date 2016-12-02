@@ -40,6 +40,10 @@ class Users extends BaseModel
     @debug "Users::create()", params
     @post "users", params, (data) -> fn data if fn
 
+  remove: (userId, fn = null) =>
+    @debug "Users::remove()"
+    @delete "users/#{userId}", (data) => fn data if fn
+
   session: (email, password, fn = null) =>
     @debug "Users::session()"
     params =
