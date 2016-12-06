@@ -14,6 +14,7 @@ class Projects extends BaseModel
     @services = @load 'ProjectServices'
     @builds = @load 'ProjectBuilds'
     @pipelines = @load 'Pipelines'
+    @branches = @load 'Branches'
     @runners = @load 'Runners'
 
   all: (params={}, fn=null) =>
@@ -26,9 +27,9 @@ class Projects extends BaseModel
     params.per_page ?= 100
 
     data = []
-    cb = (err, retData) =>
+    cb = (err, res, retData) =>
       if err
-        return fn(retData || data) if fn
+        return fn(err, res, retData) if fn
       else if retData.length == params.per_page
         @debug "Recurse Projects::all()"
         data = data.concat(retData)
@@ -36,7 +37,7 @@ class Projects extends BaseModel
         return @get "projects", params, cb
       else
         data = data.concat(retData)
-        return fn data if fn
+        return fn(err, res, data) if fn
 
     @get "projects", params, cb
 
@@ -50,9 +51,9 @@ class Projects extends BaseModel
     params.per_page ?= 100
 
     data = []
-    cb = (err, retData) =>
+    cb = (err, res, retData) =>
       if err
-        return fn(retData || data) if fn
+        return fn(err, res, retData) if fn
       else if retData.length == params.per_page
         @debug "Recurse Projects::allAdmin()"
         data = data.concat(retData)
@@ -60,7 +61,7 @@ class Projects extends BaseModel
         return @get "projects/all", params, cb
       else
         data = data.concat(retData)
-        return fn data if fn
+        return fn(err, res, data) if fn
 
     @get "projects/all", params, cb
 
