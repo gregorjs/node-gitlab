@@ -8,7 +8,7 @@ class Branches extends BaseModel
 
   unprotect: (projectId, branchName, fn = null) =>
     @debug "Branches::unprotect()"
-    @put "projects/#{Utils.parseProjectId projectId}/repository/branches/#{branchName}/unprotect", (data) => fn data if fn
+    @put "projects/#{Utils.parseProjectId projectId}/repository/branches/#{encodeURI branchName}/unprotect", null, (err, res, data) => fn err, res, data if fn
 
 
 module.exports = (client) -> new Branches client
